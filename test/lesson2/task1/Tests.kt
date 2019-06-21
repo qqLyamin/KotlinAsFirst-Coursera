@@ -40,6 +40,12 @@ class Tests {
         assertEquals("12 лет", ageDescription(12))
         assertEquals("111 лет", ageDescription(111))
         assertEquals("199 лет", ageDescription(199))
+        assertEquals("1 год", ageDescription(1))
+        assertEquals("10 лет", ageDescription(10))
+        assertEquals("50 лет", ageDescription(50))
+        assertEquals("112 лет", ageDescription(112))
+        assertEquals("155 лет", ageDescription(155))
+        assertEquals("178 лет", ageDescription(178))
     }
 
     @Test
@@ -48,6 +54,7 @@ class Tests {
         assertEquals(2.5, timeForHalfWay(1.0, 5.0, 2.0, 4.0, 3.0, 3.0), 1e-2)
         assertEquals(3.67, timeForHalfWay(4.0, 3.0, 1.0, 4.0, 1.0, 6.0), 1e-2)
         assertEquals(4.4, timeForHalfWay(3.0, 0.0, 1.0, 6.0, 2.0, 5.0), 1e-2)
+        assertEquals(3.0, timeForHalfWay(1.0, 0.0, 1.0, 0.0, 2.0, 5.0), 1e-2)
     }
 
     @Test
@@ -66,6 +73,8 @@ class Tests {
         assertEquals(1, rookOrBishopThreatens(2, 8, 6, 8, 1, 6))
         assertEquals(2, rookOrBishopThreatens(5, 4, 3, 7, 1, 8))
         assertEquals(3, rookOrBishopThreatens(1, 6, 7, 6, 3, 8))
+
+        assertEquals(3, rookOrBishopThreatens(2, 2, 3, 2, 1, 1))
     }
 
     @Test

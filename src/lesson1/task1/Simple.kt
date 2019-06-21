@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson1.task1
+import lesson2.task1.quadraticRootNumber
 import kotlin.math.*
 import kotlin.math.PI
 
@@ -55,7 +56,8 @@ fun main(args: Array<String>) {
 //    val result = sqr(123)
 //    println("123 * 123 = $result")
 //    println(angleInRadian(20, 10, 30))
-    println(thirdDigit(87987))
+    //println(thirdDigit(87987))
+    println(quadraticRootNumber(1.0,2.0,3.0))
 }
 
 /**

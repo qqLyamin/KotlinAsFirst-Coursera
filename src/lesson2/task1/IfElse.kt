@@ -62,7 +62,20 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    if ((age%100 <= 20 && age%100 > 4) || (age%10 == 5 || age%10 == 6 || age%10 == 7 || age%10 == 8 || age%10 == 9 || age%10 == 0))
+    {
+        return "$age лет"
+    }
+    else if ((age%100 > 20 || age%100 in 1..4) && (age%10 == 2 || age%10 == 3 || age%10 == 4))
+    {
+        return "$age года"
+    }
+    else if (age%10 == 1) {
+        return "$age год"
+    }
+    return ""
+}
 
 /**
  * Простая
@@ -73,7 +86,30 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val half: Double = (t1 * v1 + t2 * v2 + t3 * v3)/2.0
+    var S: Double = 0.0
+    var time: Double = 0.0
+
+    while (S < half){
+        if (time < t1)
+        {
+            time += 0.01
+            S = time * v1
+        }
+        else if (time < t1 + t2)
+        {
+            time += 0.01
+            S = t1 * v1 + (time - t1) * v2
+        }
+        else if (time < t1 + t2 + t3)
+        {
+            time += 0.01
+            S = t1 * v1 + t2 * v2 + (time - t1 - t2) * v3
+        }
+    }
+    return time
+}
 
 /**
  * Простая
@@ -86,7 +122,23 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    var counter: Int = 0
+    var both: Boolean = false
+    if (kingX == rookX1 || kingY == rookY1){
+        counter = 1
+        both = true
+    }
+
+    if (kingX == rookX2 || kingY == rookY2){
+        counter = 2
+        if (both){
+            counter += 1
+        }
+    }
+
+    return counter
+}
 
 /**
  * Простая
@@ -100,7 +152,79 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    var counter: Int = 0
+    var n: Int = 1
+    var both: Boolean = false
+
+    if (kingX == rookX || kingY == rookY){
+        counter = 1
+        both = true
+    }
+
+    while (n != 7) {
+        if (bishopX + n == kingX && bishopY + n == kingY) {
+            counter = 2
+            if (both) {
+                counter += 1
+                return counter
+            } else{
+                return counter
+            }
+        } else {
+            n++
+        }
+    }
+
+    n = 1
+
+    while (n != 7) {
+        if (bishopX + n == kingX && bishopY - n == kingY) {
+            counter = 2
+            if (both) {
+                counter += 1
+                return counter
+            } else{
+              return counter
+            }
+        } else {
+            n++
+        }
+    }
+
+    n = 1
+
+    while (n != 7) {
+        if (bishopX - n == kingX && bishopY + n == kingY) {
+            counter = 2
+            if (both) {
+                counter += 1
+                return counter
+            } else{
+                return counter
+            }
+        } else {
+            n++
+        }
+    }
+
+    n = 1
+
+    while (n != 7) {
+        if (bishopX - n == kingX && bishopY - n == kingY) {
+            counter = 2
+            if (both) {
+                counter += 1
+                return counter
+            } else{
+                return counter
+            }
+        } else {
+            n++
+        }
+    }
+    return counter
+}
 
 /**
  * Простая
