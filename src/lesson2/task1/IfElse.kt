@@ -92,18 +92,13 @@ fun timeForHalfWay(t1: Double, v1: Double,
     var time: Double = 0.0
 
     while (S < half){
-        if (time < t1)
-        {
+        if (time < t1){
             time += 0.01
             S = time * v1
-        }
-        else if (time < t1 + t2)
-        {
+        } else if (time < t1 + t2){
             time += 0.01
             S = t1 * v1 + (time - t1) * v2
-        }
-        else if (time < t1 + t2 + t3)
-        {
+        } else if (time < t1 + t2 + t3){
             time += 0.01
             S = t1 * v1 + t2 * v2 + (time - t1 - t2) * v3
         }
@@ -161,7 +156,6 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
         counter = 1
         both = true
     }
-
     while (n != 7) {
         if (bishopX + n == kingX && bishopY + n == kingY) {
             counter = 2
@@ -175,9 +169,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
             n++
         }
     }
-
     n = 1
-
     while (n != 7) {
         if (bishopX + n == kingX && bishopY - n == kingY) {
             counter = 2
@@ -191,9 +183,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
             n++
         }
     }
-
     n = 1
-
     while (n != 7) {
         if (bishopX - n == kingX && bishopY + n == kingY) {
             counter = 2
@@ -207,9 +197,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
             n++
         }
     }
-
     n = 1
-
     while (n != 7) {
         if (bishopX - n == kingX && bishopY - n == kingY) {
             counter = 2
@@ -234,7 +222,20 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+
+
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if (a > 0 && b > 0 && c > 0 && (a + b > c && a + c > b && b + c > a)) {
+        if ((a * a == b * b + c * c) || (c * c == b * b + a * a) || (b * b == c * c + a * a)) {
+            return 1
+        } else if ((a * a < b * b + c * c) && (c * c < b * b + a * a) && (b * b < c * c + a * a)) {
+            return 0
+        } else if ((a * a > b * b + c * c) || (c * c > b * b + a * a) || (b * b > c * c + a * a)) {
+            return 2
+        }
+    }
+    return -1
+}
 
 /**
  * Средняя
@@ -244,4 +245,24 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int{
+    if ((a < d && a > c) || (c < b && c > a)) {
+        if (a < d && b <= d && a >= c){
+            return b - a
+        }
+        if (d <= b && c < b && c >= a){
+            return d - c
+        }
+        if (b > d && a < d){
+            return d - a
+        }
+        if (b > c && a < c){
+            return b - c
+        }
+    } else {
+        if (b == c){
+            return 0
+        }
+    }
+    return -1
+}
