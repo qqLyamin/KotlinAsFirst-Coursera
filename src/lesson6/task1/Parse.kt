@@ -49,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +69,66 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    var result_str = String()
+    if (parts.size == 3) {
+        for (part in parts) {
+            if (part == parts[0]) {
+                if (part.length <= 2 && part.toInt() <= 31) {
+                    result_str += "${String.format("%02d", part.toInt())}" + "."
+                } else {
+                    return String()
+                }
+            }
+
+            if (part == parts[1]) {
+                when (part) {
+                    "января" -> result_str += "01."
+                    "февраля" -> {
+                        result_str += "02."
+                        if (parts[0].toInt() !in 1..28) return String()
+                    }
+                    "марта" -> result_str += "03."
+                    "апреля" -> {
+                        result_str += "04."
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "мая" -> result_str += "05."
+                    "июня" -> {
+                        result_str += "06."
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "июля" -> result_str += "07."
+                    "августа" -> result_str += "08."
+                    "сентября" -> {
+                        result_str += "09."
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "октября" -> result_str += "10."
+                    "ноября" -> {
+                        result_str += "11."
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "декабря" -> result_str += "12."
+                    else -> return String()
+                }
+            }
+
+            if (part == parts[2]) {
+                part.toMutableList()
+                for (i in 0..part.lastIndex) {
+                    if (part[i].toInt() !in 48..57) return String()
+                }
+                result_str += part
+            }
+        }
+    } else {
+        return String()
+    }
+
+    return result_str
+}
 
 /**
  * Средняя
@@ -83,7 +140,71 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+    var result_str = String()
+    if (parts.size == 3) {
+        for (part in parts) {
+            if (part == parts[0]) {
+                if (part.length <= 2) {
+                    var a = part.toIntOrNull()
+                    if (a != null && part.toInt() <= 31) {
+                        result_str += "${part.toInt()}" + " "
+                    } else {
+                        return String()
+                    }
+                } else {
+                    return String()
+                }
+            }
+
+            if (part == parts[1]) {
+                when (part) {
+                    "01" -> result_str += "января "
+                    "02" -> {
+                        result_str += "февраля "
+                        if (parts[0].toInt() !in 1..28) return String()
+                    }
+                    "03" -> result_str += "марта "
+                    "04" -> {
+                        result_str += "апреля "
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "05" -> result_str += "мая "
+                    "06" -> {
+                        result_str += "июня "
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "07" -> result_str += "июля "
+                    "08" -> result_str += "августа "
+                    "09" -> {
+                        result_str += "сентября "
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "10" -> result_str += "октября "
+                    "11" -> {
+                        result_str += "ноября "
+                        if (parts[0].toInt() !in 1..30) return String()
+                    }
+                    "12" -> result_str += "декабря "
+                    else -> return String()
+                }
+            }
+
+            if (part == parts[2]) {
+                part.toMutableList()
+                for (i in 0..part.lastIndex) {
+                    if (part[i].toInt() !in 48..57) return String()
+                }
+                result_str += part
+            }
+        }
+    } else {
+        return String()
+    }
+
+    return result_str
+}
 
 /**
  * Средняя
@@ -97,7 +218,19 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var back_phonenumber: String
+    back_phonenumber = phone
+    back_phonenumber = Regex("""-|\ |\(|\)""").replace(back_phonenumber, "")
+    if (back_phonenumber.length !in 0..13) return String()
+    for (i in back_phonenumber) {
+        if (i.toInt() == 43 && i != back_phonenumber[0]) return String()
+        if (i.toInt() !in 48..57 && i.toInt() != 43) {
+            return String()
+        }
+    }
+    return back_phonenumber
+}
 
 /**
  * Средняя
@@ -109,7 +242,35 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var back_jumping: String
+    back_jumping = jumps
+    //второй вариант решения (дольше на 10мс)
+//    back_jumping = Regex("""%|-""").replace(back_jumping, "")
+//    while (back_jumping.contains("  ")) {
+//        back_jumping = Regex("""\   |\  """).replace(back_jumping, " ")
+//    }
+//
+//    val parts = back_jumping.split(" ")
+//    var max_result: Int = 0
+//
+//    for (part in parts) {
+//        var another: Int? = part.toIntOrNull() ?: return -1
+//        if (part.toInt() > max_result) max_result = part.toInt()
+//    }
+    var max_result: Int = 0
+    val parts = back_jumping.split(" ")
+    for (i in parts.indices) {
+        var a = parts[i].toIntOrNull()
+        if (a != null) { //parts.drop(i)
+            if (parts[i].toInt() > max_result) max_result = parts[i].toInt()
+        } else {
+            if (parts[i] != " " && parts[i] != "%" && parts[i] != "-") return -1
+        }
+    }
+    if (max_result == 0) return -1
+    return max_result
+}
 
 /**
  * Сложная
@@ -121,7 +282,26 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var maxHigh: Int = -1
+    var back_jump = jumps.split(" ")
+    var counter: Int = -1
+    for (jump in back_jump) {
+        counter++
+        if (counter % 2 != 0) {
+            for (i in 0..jump.length - 1) {
+                if (jump[i] != '%' && jump[i] != '-' && jump[i] != '+') return -1
+            }
+
+            if (jump.endsWith("+")) {
+                var a = back_jump[counter - 1].toIntOrNull()
+                if (a == null) return -1
+                if (back_jump[counter - 1].toInt() > maxHigh) maxHigh = back_jump[counter - 1].toInt()
+            }
+        }
+    }
+    return maxHigh
+}
 
 /**
  * Сложная
@@ -132,7 +312,45 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var ansver: Int = 0
+    var values = expression.split(" ")
+    var counter: Int = -1
+    for (i in values) {
+        counter++
+        if (counter <= values.lastIndex) {
+            if (counter % 2 == 0) {
+                if (counter == 0) {
+                    var a = i.toIntOrNull()
+                    if (a == null) throw IllegalArgumentException()
+                    ansver += values[counter].toInt()
+                }
+
+                var a = i.toIntOrNull()
+                if (a == null) throw IllegalArgumentException()
+
+                for (letter in i) {
+                    if (letter.toInt() !in 48..57) throw IllegalArgumentException()
+                }
+
+            } else if (counter % 2 != 0) {
+                if (i == "+") {
+                    var b = values[counter + 1].toIntOrNull()
+                    if (b == null) throw IllegalArgumentException()
+                    ansver += values[counter + 1].toInt()
+                } else if (i == "-") {
+                    var c = values[counter + 1].toIntOrNull()
+                    if (c == null) throw IllegalArgumentException()
+                    ansver -= values[counter + 1].toInt()
+                } else {
+                    throw IllegalArgumentException()
+                }
+            }
+        }
+    }
+    return ansver
+}
+
 
 /**
  * Сложная
@@ -143,7 +361,44 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var input: String = str
+    var finded: String = ""
+    var output: Int = -1
+    var j: Int
+    var cuted: Int = 0
+    input = input.toLowerCase()
+    var list_input = input.split(" ")
+    for (i in 0..list_input.lastIndex) {
+        if (finded != "") break
+        j = i + 1
+        if (i + 1 > list_input.lastIndex) break
+        if (list_input[i] == list_input[j]) {
+            finded = list_input[i]
+            break
+        }
+    }
+    if (finded != "") {
+        var counter: Int = 0
+        var maximum: Int = input.length
+        while (true) {
+            counter++
+            if (input[input.indexOf(finded)] == input[input.indexOf(finded) + finded.length + 1]) {
+                output = input.indexOf(finded)
+                break
+            } else {
+                var before_length = input.length
+                input = input.drop(input.indexOf(finded) + finded.length)
+                cuted += before_length - input.length
+            }
+            if (counter >= maximum) break
+        }
+    } else {
+        return output
+    }
+
+    return output + cuted
+}
 
 /**
  * Сложная
@@ -156,7 +411,26 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    var my_description = description.split("; ")
+    var map_cost_goods = mutableMapOf<Double, String>()
+    for (i in my_description) {
+        var stuff = i.split(" ")
+
+        if (stuff.size != 2) return String()
+        var a = stuff[1].toDoubleOrNull()
+
+        if (a == null) return String()
+        map_cost_goods.put(stuff[1].toDouble(), stuff[0])
+    }
+
+    var maximum: Double = 0.0
+    for (j in map_cost_goods.keys) {
+        if (j > maximum) maximum = j
+    }
+
+    return map_cost_goods[maximum]!!
+}
 
 /**
  * Сложная
@@ -169,7 +443,100 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    var income: String = roman
+    if (income.toUpperCase() != roman) return -1
+
+    for (i in income) {
+        var a = i.toInt()
+        if (a != 73 && a != 86 && a != 88 && a !in 76..77 && a !in 67..68) return -1
+    }
+
+    var income_list = income.split("")
+    income_list = income_list.drop(1)
+    income_list = income_list.dropLast(1)
+
+    var int_list = mutableListOf<Int>()
+
+    var count: Int = 0
+    for (i in income_list) {
+        when (i) {
+            "I" -> int_list.add(count, 1)
+            "V" -> int_list.add(count, 5)
+            "X" -> int_list.add(count, 10)
+            "L" -> int_list.add(count, 50)
+            "C" -> int_list.add(count, 100)
+            "D" -> int_list.add(count, 500)
+            "M" -> int_list.add(count, 1000)
+        }
+        count++
+    }
+
+    if (int_list.isEmpty()) return -1
+    if (int_list.size == 1) return int_list[0]
+    var summ: Int = 0
+    var tmp: Int = 0
+    var i: Int = int_list.size - 1
+
+    while (true) {
+        if (tmp == 0) {
+            if (i - 1 > 0) {
+                if (int_list[i] > int_list[i - 1]) {
+                    tmp -= int_list[i - 1]
+                    tmp += int_list[i]
+                }
+
+                if (int_list[i] == int_list[i - 1]) {
+                    if (i != int_list.size - 1) {
+                        tmp += int_list[i - 1]
+                    } else {
+                        tmp = int_list[i - 1] + int_list[i]
+                    }
+                }
+
+                if (int_list[i] < int_list[i - 1]) {
+                    tmp += int_list[i - 1]
+                }
+                i--
+            } else {
+                summ += tmp
+                if (summ < 1) return -1
+                break
+            }
+        } else {
+            if (int_list[i] > int_list[i - 1]) {
+                tmp -= int_list[i - 1]
+                if (i - 1 == 0) {
+                    summ += tmp
+                    break
+                }
+            }
+
+            if (int_list[i] == int_list[i - 1]) {
+                if (i == int_list.size - 1) {
+                    tmp = int_list[i - 1] + int_list[i]
+                } else {
+                    tmp += int_list[i - 1]
+                    if (i - 1 == 0) {
+                        summ += tmp
+                        break
+                    }
+                }
+            }
+
+            if (int_list[i] < int_list[i - 1]) {
+                tmp += int_list[i - 1]
+                if (i - 1 == 0) {
+                    summ += tmp
+                    break
+                }
+            }
+            i--
+        }
+    }
+
+    return summ
+}
 
 /**
  * Очень сложная
@@ -207,4 +574,109 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var command = commands.toMutableList()
+    var mlist = mutableListOf<Int>()
+    var Position: Int = cells / 2
+
+    for (i in 0..cells - 1) {
+        mlist.add(i, 0)
+    }
+
+    var command_limit: Int = limit
+    var counter: Int = 0
+    var i: Int = 0
+
+    var counter_open: Int = 0
+    var counter_close: Int = 0
+    while (i < command.size) {
+        when (command[i]) {
+            ']' -> {
+                counter_close++
+            }
+            '[' -> {
+                counter_open++
+                if (counter_open < counter_close) throw IllegalArgumentException()
+            }
+        }
+        i++
+    }
+
+    if (counter_open != counter_close) throw IllegalArgumentException()
+
+    i = 0
+    while (i < command.size) {
+        counter++
+        if (command_limit <= 0) break
+        when (command[i]) {
+            ' ' -> {
+                command_limit--
+            }
+            '>' -> {
+                Position++
+                if (Position > mlist.size - 1) throw IllegalStateException()
+                command_limit--
+            }
+            '<' -> {
+                Position--
+                if (Position < 0) throw IllegalStateException()
+                command_limit--
+            }
+            '+' -> {
+                mlist[Position]++
+                command_limit--
+            }
+            '-' -> {
+                mlist[Position]--
+                command_limit--
+            }
+            '[' -> {
+                command_limit--
+                if (mlist[Position] == 0) {
+                    var tmp: Boolean = false
+                    var j: Int = counter
+                    var copy_counter: Int = 1
+                    while (j < command.size - 1) {
+                        if (command[j] == '[') copy_counter++
+                        if (command[j] == ']' && copy_counter >= 1) copy_counter--
+                        if (command[j] == ']' && copy_counter == 0) {
+                            i = j
+                            counter = j + 1
+                            tmp = true
+                            break
+                        }
+                        j++
+                    }
+                    if (!tmp) throw IllegalArgumentException()
+                    j++
+                }
+            }
+            ']' -> {
+                command_limit--
+                if (mlist[Position] != 0) {
+                    var copy_counter: Int = 1
+                    var tmp: Boolean = false
+                    var j: Int = counter - 2
+                    while (j > 0) {
+                        if (command[j] == ']') copy_counter++
+                        if (command[j] == '[' && copy_counter >= 1) copy_counter--
+
+                        if (command[j] == '[' && copy_counter == 0) {
+                            i = j
+                            counter = j + 1
+                            tmp = true
+                            break
+                        }
+                        j--
+                    }
+                    if (!tmp) throw IllegalArgumentException()
+                }
+            }
+            else -> {
+                throw IllegalArgumentException()
+            }
+        }
+        i++
+    }
+    return mlist
+}
